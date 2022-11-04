@@ -40,7 +40,7 @@ void setup() {
   server.on("/", handle_OnConnect);
   server.begin();
   Serial.println("HTTP server started");
-  SD.open("admin.html");
+  adminPanel = SD.open("admin.html");
   // RTC clock setup
   gwiot7941e.begin(GWIOT_7941E_RX_PIN);
   Wire.begin();
@@ -60,4 +60,5 @@ void handle_OnConnect() {
 
 String SendHTML() {
   String code = adminPanel.read();
+  return code;
 }
