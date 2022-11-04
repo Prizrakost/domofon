@@ -59,6 +59,7 @@ void handle_OnConnect() {
 }
 
 String SendHTML() {
+  String code;
   while (adminPanel.available()) {
       code += adminPanel.read();
     }
