@@ -27,7 +27,7 @@ void setup() {
   // Wi-Fi
   WiFi.softAP(ssid, password);
   WiFi.softAPConfig(local_ip, gateway, subnet);
-  delay(100)
+  delay(100);
   // Web server
   server.on("/", handle_OnConnect);
   server.begin();
