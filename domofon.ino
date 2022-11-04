@@ -20,10 +20,18 @@ ESP8266WebServer server(80);
 DS3231 myRTC;
 
 #define SD_pin_num 15 // пин, куда подключена SD-карта (CS)
+File adminPanel;
 
 void setup() {
   // put your setup code here, to run once:
   Serial.begin(9600);
+  // SD-card setup
+  Serial.print("Initializing SD card...");
+  if (!SD.begin(SD_pin_num)) {
+    Serial.println("initialization failed!");
+    // while (1);
+  }
+  Serial.println("initialization done.");
   // Wi-Fi
   WiFi.softAP(ssid, password);
   WiFi.softAPConfig(local_ip, gateway, subnet);
@@ -32,17 +40,10 @@ void setup() {
   server.on("/", handle_OnConnect);
   server.begin();
   Serial.println("HTTP server started");
+  SD.open("admin.html");
   // RTC clock setup
   gwiot7941e.begin(GWIOT_7941E_RX_PIN);
   Wire.begin();
-
-  // SD-card setup
-  Serial.print("Initializing SD card...");
-  if (!SD.begin(SD_pin_num)) {
-    Serial.println("initialization failed!");
-    // while (1);
-  }
-  Serial.println("initialization done.");
 }
 
 void loop() {
@@ -54,5 +55,9 @@ void loop() {
 }
 
 void handle_OnConnect() {
-  server.send(200, "text/html", SendHTML("qwe"))
+  server.send(200, "text/html", SendHTML());
+}
+
+String SendHTML() {
+  String code = adminPanel.read();
 }
