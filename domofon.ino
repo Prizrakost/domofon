@@ -4,7 +4,7 @@
 #include <SPI.h>        // SD-card
 #include <SD.h>         // SD-card
 
-#define GWIOT_7941E_RX_PIN 4
+#define GWIOT_7941E_RX_PIN 4 // пин, куда подключён RFID-сканнер
 Gwiot7941e gwiot7941e;
 
 DS3231 myRTC;
@@ -22,7 +22,7 @@ void setup() {
   Serial.print("Initializing SD card...");
   if (!SD.begin(SD_pin_num)) {
     Serial.println("initialization failed!");
-    while (1);
+    // while (1);
   }
   Serial.println("initialization done.");
 }
