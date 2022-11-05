@@ -9,8 +9,8 @@
 #define GWIOT_7941E_RX_PIN 4 // пин, куда подключён RFID-сканнер
 Gwiot7941e gwiot7941e;
 
-char* ssid = "domofon";
-char* password = "domofon";
+String ssid = "domofon";
+String password = "domofon";
 IPAddress local_ip(192,168,1,1);
 IPAddress gateway(192,168,1,1);
 IPAddress subnet(255,255,255,0);
@@ -65,3 +65,13 @@ String SendHTML() {
     }
   return code;
 }
+
+class Config {
+  public:
+    bool WiFimode;
+
+  private:
+  
+};
+
+Config cfg;
