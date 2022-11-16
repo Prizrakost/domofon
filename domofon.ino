@@ -6,21 +6,28 @@
 #include <ESP8266WiFi.h> // Wi-Fi
 #include <ESP8266WebServer.h> // Web server
 
+class Config {
+  public:
+    bool WiFimode = false; // false = AP, true = STA
+    String APssid = "domofon";
+    String APpassword = "domofon123321";
+    String STAssid;
+    String STApassword;
+  private:
+};
+
+Config cfg;
+
 #define GWIOT_7941E_RX_PIN 4 // пин, куда подключён RFID-сканнер
 Gwiot7941e gwiot7941e;
-
-String ssid = "domofon";
-String password = "domofon";
-IPAddress local_ip(192,168,1,1);
-IPAddress gateway(192,168,1,1);
-IPAddress subnet(255,255,255,0);
 
 ESP8266WebServer server(80);
 
 DS3231 myRTC;
 
 #define SD_pin_num 15 // пин, куда подключена SD-карта (CS)
-File adminPanel;
+File adminPanelFile;
+String adminPanelCode;
 
 void setup() {
   // put your setup code here, to run once:
@@ -33,17 +40,8 @@ void setup() {
   }
   Serial.println("initialization done.");
   // Wi-Fi
-  WiFi.softAP(ssid, password);
-  WiFi.softAPConfig(local_ip, gateway, subnet);
-  delay(100);
-  // Web server
-  server.on("/", handle_OnConnect);
-  server.begin();
-  Serial.println("HTTP server started");
-  adminPanel = SD.open("admin.html");
-  // RTC clock setup
-  gwiot7941e.begin(GWIOT_7941E_RX_PIN);
-  Wire.begin();
+  adminPanelFile = SD.open("admin.html"); 
+  startWiFi();
 }
 
 void loop() {
@@ -53,25 +51,3 @@ void loop() {
     }
 
 }
-
-void handle_OnConnect() {
-  server.send(200, "text/html", SendHTML());
-}
-
-String SendHTML() {
-  String code;
-  while (adminPanel.available()) {
-      code += adminPanel.read();
-    }
-  return code;
-}
-
-class Config {
-  public:
-    bool WiFimode;
-
-  private:
-  
-};
-
-Config cfg;
