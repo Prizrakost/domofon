@@ -6,13 +6,26 @@ String APssid = "domofon";
 String APpassword = "domofon123321";
 String STAssid;
 String STApassword;
+GyverPortal portal;
+
+void build() {
+  // конструктор страницы
+}
+
+void action() {
+  // опрос действий
+}
 
 void setup() {
+  // подключаемся к сети
   Serial.begin(9600);
   startWiFi();
+  portal.attachBuild(build);
+  portal.attach(action);
+  portal.enableAuth("admin", "admin");
+  portal.start();
 }
 
 void loop() {
-  // put your main code here, to run repeatedly:
-  
+  portal.tick();
 }
