@@ -24,6 +24,10 @@ void build() {
 
 void action() {
   // опрос действий
+  if (portal.update()) {
+    portal.updateBool("door", WiFimode);
+  }
+  
   if (portal.click()) {
     // опрос кликов
     Serial.println(portal.clickName());
