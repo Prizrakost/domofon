@@ -6,6 +6,7 @@ String APssid = "domofon";
 String APpassword = "domofon123321";
 String STAssid;
 String STApassword;
+
 GyverPortal portal;
 
 bool doorOpen = false; // Дверь открыта
