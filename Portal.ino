@@ -2,6 +2,7 @@ void build() {
   // конструктор страницы
   GP.BUILD_BEGIN();
   GP.THEME(GP_DARK);
+  GP.UPDATE("door");
 
   // Wi-Fi
   GP.FORM_BEGIN("/wifi");    // начать форму, передать имя
@@ -11,6 +12,8 @@ void build() {
   GP.BREAK();                        // перенос строки
   GP.SUBMIT("Подтвердить");         // кнопка Submit
   GP.FORM_END(); 
+
+  GP.HR();
 
   GP.LABEL("Дверь");
   GP.SWITCH("door", doorOpen); //false by default
