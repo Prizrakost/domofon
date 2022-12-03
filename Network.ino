@@ -33,8 +33,28 @@ void configureServer() {
     adminPanelCode += adminPanelFile.read();
   }
   server.on("/", handle_OnConnect);
+  server.on("/buttonOpen", handle_buttonOpen);
 }
 
 void handle_OnConnect() {
-  server.send(200, "text/html", adminPanelCode);
+  server.send(200, "text/html", panel(door));
+}
+
+void handle_buttonOpen() {
+  // openDoor(); or sth
+  server.send(200, "text/html", panel(door));
+}
+
+String panel(bool door) {
+  String code = "";
+  code += "<h1>door<h1>";
+
+  if (door) {
+    code += "<h2>open<h2>";
+  } else {
+    code == "<h2>close<h2>";
+  }
+  code += "<h1>qwe<h1>";
+  
+  return code;
 }

@@ -29,6 +29,8 @@ DS3231 myRTC;
 File adminPanelFile;
 String adminPanelCode;
 
+bool door = false;
+
 void setup() {
   // put your setup code here, to run once:
   Serial.begin(9600);
