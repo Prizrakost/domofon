@@ -48,6 +48,12 @@ void action() {
         Serial.println(APpassword);
       } else {
         Serial.println("STA");
+        STAssid = portal.getString("ssid");
+        Serial.print("STA SSID: ");
+        Serial.println(STAssid);
+        STApassword = portal.getString("wifipassword");
+        Serial.print("STA Password: ");
+        Serial.println(STApassword);
       }
     }
   }
