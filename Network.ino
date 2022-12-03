@@ -11,7 +11,7 @@ void setupAP() {
   IPAddress gateway(192,168,1,1);
   IPAddress subnet(255,255,255,0);
   WiFi.softAPConfig(local_ip, gateway, subnet);
-  WiFi.softAP(cfg.APssid, cfg.APpassword);
+  WiFi.softAP(APssid, APpassword);
   delay(500);
 }
 
