@@ -8,8 +8,16 @@ String STAssid;
 String STApassword;
 GyverPortal portal;
 
+bool doorOpen = false; // Дверь открыта
+
 void build() {
   // конструктор страницы
+  GP.BUILD_BEGIN();
+  GP.THEME(GP_DARK);
+  
+  GP.SWITCH("Дверь", doorOpen, true);
+  
+  GP.BUILD_END();
 }
 
 void action() {
