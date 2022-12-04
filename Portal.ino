@@ -37,8 +37,9 @@ void build() {
       GP.TD();
       if (j == 2) {
         GP.CHECK("access#" + String(i), bool(keys[i][2]));
+      } else {
+        GP.TEXT("", "", keys[i][j]);
       }
-      GP.TEXT("", "", keys[i][j]);
     }
   }
   GP.TABLE_END();
