@@ -1,5 +1,6 @@
 #include <GyverPortal.h>
 #include <LittleFS.h>
+#include <ESP8266WiFi.h>
 
 // Настройки Wi-Fi
 bool WiFimode = false; // false = AP, true = STA
@@ -10,6 +11,13 @@ String STApassword;
 
 //GyverPortal portal;
 GyverPortal portal(&LittleFS);
+/*
+String login = "admin";
+String password = "admin";
+*/
+// Брать из файла
+const char* login = "admin";
+const char* password = "admin";
 
 bool doorOpen = false; // Дверь открыта
 

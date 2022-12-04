@@ -4,13 +4,13 @@ void build() {
   GP.THEME(GP_DARK);
   GP.UPDATE("door");
 
-  GP.NAV_TABS("Управление,Настройки Wi-Fi,Логи");
+  GP.NAV_TABS("Управление,Настройки Wi-Fi,Логи,Аутентификация");
 
   GP.NAV_BLOCK_BEGIN();
   GP.LABEL("Дверь");
   GP.SWITCH("door", doorOpen); //false by default
   GP.NAV_BLOCK_END();
-  
+
   // Wi-Fi
   GP.NAV_BLOCK_BEGIN();
   GP.FORM_BEGIN("/wifi");    // начать форму, передать имя
@@ -19,14 +19,23 @@ void build() {
   GP.PASS("wifipassword", "Password");
   GP.BREAK();                        // перенос строки
   GP.SUBMIT("Подтвердить");         // кнопка Submit
-  GP.FORM_END(); 
+  GP.FORM_END();
   GP.NAV_BLOCK_END();
 
   GP.NAV_BLOCK_BEGIN();
   GP.LABEL("Log");
   GP.EMBED("/log.txt");
   GP.NAV_BLOCK_END();
-  
+
+  GP.NAV_BLOCK_BEGIN();
+  GP.FORM_BEGIN("/auth");
+  GP.TEXT("login", "Логин", login);
+  GP.PASS("password", "Пароль", password);
+  GP.BREAK();
+  GP.SUBMIT("Подтвердить");
+  GP.FORM_END();
+  GP.NAV_BLOCK_END();
+
   GP.BUILD_END();
 }
 
@@ -35,7 +44,7 @@ void action() {
   if (portal.update()) {
     portal.updateBool("door", WiFimode);
   }
-  
+
   if (portal.click()) {
     // опрос кликов
     Serial.println(portal.clickName());
@@ -45,11 +54,25 @@ void action() {
     }
   }
 
-  if (portal.form()){
+  if (portal.form()) {
     Serial.print("Submit form: ");
-    if (portal.form("/wifi")){
+
+    if (portal.form("/auth")) {
+      Serial.println("auth");
+
+      // Записать в файл portal.getString("login")
+      //login = portal.getString("login");
+      Serial.print("New login: ");
+      Serial.println(login);
+      // Записать в файл portal.getString("password")
+      //password = portal.getString("password");
+      Serial.print("New password: ");
+      Serial.println(password);
+    }
+
+    if (portal.form("/wifi")) {
       Serial.println("wifi");
-      
+
       WiFimode = portal.getBool("wifimode");
       Serial.print("WiFi mode: ");
 
@@ -72,7 +95,7 @@ void action() {
       }
     }
   }
-  
+
   if (portal.download()) {
     // есть запрос, смотрим адрес (путь к файлу)
     Serial.println(portal.uri());
@@ -83,5 +106,5 @@ void action() {
 void configurePortal() {
   portal.attachBuild(build);
   portal.attach(action);
-  portal.enableAuth("admin", "admin");
+  portal.enableAuth(login, password);
 }
