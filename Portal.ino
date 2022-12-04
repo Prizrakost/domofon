@@ -31,10 +31,25 @@ void build() {
   GP.NAV_BLOCK_BEGIN();
   GP.FORM_BEGIN("/keys");
   GP.TABLE_BEGIN();
-  GP.TR();
-  GP.TD();
-  
+  for (int i = 0; i<sizeof(keys); i++) {
+   GP.TR();
+   GP.TD();
+   GP.TEXT("", "", keys[i][0]); 
+   GP.TD();
+   GP.TEXT("", "", keys[i][1]);
+   GP.TD();
+   GP.TEXT("", "", keys[i][2]);
+   GP.TD();
+   GP.TEXT("", "", keys[i][3]);
+  }
   GP.TABLE_END();
+  GP.BREAK();
+  GP.TEXT("ID");
+  GP.TEXT("name");
+  GP.TEXT("access");
+  GP.TEXT("time");
+  GP.BREAK();
+  GP.SUBMIT("Добавить");
   GP.FORM_END();
   GP.NAV_BLOCK_END();
 
@@ -71,6 +86,18 @@ void action() {
 
   if (portal.form()) {
     Serial.print("Submit form: ");
+
+    if (portal.form("/keys")) {
+      Serial.println("keys");
+
+      // Добавить в файл
+      /*
+      portal.getString("ID");
+      portal.getString("name");
+      portal.getString("access");
+      portal.getString("time");
+      */
+    }
 
     if (portal.form("/auth")) {
       Serial.println("auth");

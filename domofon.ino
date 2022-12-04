@@ -19,6 +19,10 @@ String password = "admin";
 const char* login = "admin";
 const char* password = "admin";
 String logText = "qwe"; // Лог
+String keys[][4] = {
+  {"1", "2", "3", "4"},
+  {"5", "6", "7", "8"}
+  };
 
 bool doorOpen = false; // Дверь открыта
 
