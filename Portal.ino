@@ -100,7 +100,7 @@ void action() {
 
       // Изменить доступ, где надо
       if (portal.clickSub("access#")) {
-        Serial.println(portal.clickName()); // даёт access#номер ключа
+        Serial.println(portal.clickName()); // возвращает access#номер ключа
       }
     }
 
