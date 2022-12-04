@@ -18,6 +18,7 @@ String password = "admin";
 // Брать из файла
 const char* login = "admin";
 const char* password = "admin";
+String logText = "qwe"; // Лог
 
 bool doorOpen = false; // Дверь открыта
 

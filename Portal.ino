@@ -2,7 +2,7 @@ void build() {
   // конструктор страницы
   GP.BUILD_BEGIN();
   GP.THEME(GP_DARK);
-  GP.UPDATE("door");
+  GP.UPDATE("door,log");
 
   GP.NAV_TABS("Управление,Настройки Wi-Fi,Логи,Аутентификация");
 
@@ -24,7 +24,7 @@ void build() {
 
   GP.NAV_BLOCK_BEGIN();
   GP.LABEL("Log");
-  GP.EMBED("/log.txt");
+  GP.AREA("log", 100, logText);
   GP.NAV_BLOCK_END();
 
   GP.NAV_BLOCK_BEGIN();
@@ -42,7 +42,11 @@ void build() {
 void action() {
   // опрос действий
   if (portal.update()) {
-    portal.updateBool("door", WiFimode);
+    portal.updateBool("door", doorOpen);
+    if (portal.update("log")) {
+      // Читать из файла
+      portal.answer(logText);
+    }
   }
 
   if (portal.click()) {
