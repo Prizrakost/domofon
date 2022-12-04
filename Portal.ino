@@ -90,13 +90,18 @@ void action() {
     if (portal.form("/keys")) {
       Serial.println("keys");
 
-      // Добавить в файл
+      // Добавить в файл если не пустое
       /*
       portal.getString("ID");
       portal.getString("name");
-      portal.getString("access");
+      portal.getBool("access");
       portal.getString("time");
       */
+
+      // Изменить доступ, где надо
+      if (portal.click()) {
+        Serial.println(portal.clickName()); // даёт access#номер ключа
+      }
     }
 
     if (portal.form("/auth")) {
