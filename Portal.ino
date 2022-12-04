@@ -4,7 +4,7 @@ void build() {
   GP.THEME(GP_DARK);
   GP.UPDATE("door,log");
 
-  GP.NAV_TABS("Управление,Настройки Wi-Fi,Логи,Аутентификация");
+  GP.NAV_TABS("Управление,Настройки Wi-Fi,Логи,Ключи,Аутентификация");
 
   GP.NAV_BLOCK_BEGIN();
   GP.LABEL("Дверь");
@@ -25,6 +25,17 @@ void build() {
   GP.NAV_BLOCK_BEGIN();
   GP.LABEL("Log");
   GP.AREA("log", 100, logText);
+  GP.NAV_BLOCK_END();
+
+  // Ключи
+  GP.NAV_BLOCK_BEGIN();
+  GP.FORM_BEGIN("/keys");
+  GP.TABLE_BEGIN();
+  GP.TR();
+  GP.TD();
+  
+  GP.TABLE_END();
+  GP.FORM_END();
   GP.NAV_BLOCK_END();
 
   GP.NAV_BLOCK_BEGIN();
