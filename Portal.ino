@@ -35,6 +35,9 @@ void build() {
     for (int j = 0; i<4; i++) {
       GP.TR();
       GP.TD();
+      if (j == 2) {
+        GP.CHECK("access#" + String(i), bool(keys[i][2]));
+      }
       GP.TEXT("", "", keys[i][j]);
     }
   }
