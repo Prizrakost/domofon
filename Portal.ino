@@ -18,6 +18,11 @@ void build() {
   GP.LABEL("Дверь");
   GP.SWITCH("door", doorOpen); //false by default
   GP.BREAK();
+
+  GP.HR();
+
+  GP.LABEL("Log");
+  GP.EMBED(ссылка);
   
   GP.BUILD_END();
 }
@@ -63,6 +68,12 @@ void action() {
         Serial.println(STApassword);
       }
     }
+  }
+  
+  if (portal.download()) {
+    // есть запрос, смотрим адрес (путь к файлу)
+    Serial.println(portal.uri());
+    portal.sendFile(portal.uri());
   }
 }
 
