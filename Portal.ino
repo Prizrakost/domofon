@@ -100,6 +100,8 @@ void action() {
 
       // Изменить доступ, где надо
       // (надеюсь. так сработает)
+      // Попользовать “Массив” компонентов file:///C:/Users/remem/myThings/pandoc-2.19.2/GyverPortal.wiki/%D0%9E%D0%B1%D1%80%D0%B0%D0%B1%D0%BE%D1%82%D0%BA%D0%B0-%D0%BA%D0%BB%D0%B8%D0%BA%D0%BE%D0%B2.html
+      // Попользовать кастомную хрень?
       if (portal.clickSub("access#")) {
         Serial.println(portal.clickName()); // возвращает access#номер ключа
         keys[int(portal.clickName()[7])][2] = char(int(portal.getBool(portal.clickName())));
