@@ -32,15 +32,11 @@ void build() {
   GP.FORM_BEGIN("/keys");
   GP.TABLE_BEGIN();
   for (int i = 0; i<sizeof(keys); i++) {
-   GP.TR();
-   GP.TD();
-   GP.TEXT("", "", keys[i][0]); 
-   GP.TD();
-   GP.TEXT("", "", keys[i][1]);
-   GP.TD();
-   GP.TEXT("", "", keys[i][2]);
-   GP.TD();
-   GP.TEXT("", "", keys[i][3]);
+    for (int j = 0; i<4; i++) {
+      GP.TR();
+      GP.TD();
+      GP.TEXT("", "", keys[i][j]);
+    }
   }
   GP.TABLE_END();
   GP.BREAK();
