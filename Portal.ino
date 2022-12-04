@@ -4,7 +4,15 @@ void build() {
   GP.THEME(GP_DARK);
   GP.UPDATE("door");
 
+  GP.NAV_TABS("Управление,Настройки Wi-Fi,Логи");
+
+  GP.NAV_BLOCK_BEGIN();
+  GP.LABEL("Дверь");
+  GP.SWITCH("door", doorOpen); //false by default
+  GP.NAV_BLOCK_END();
+  
   // Wi-Fi
+  GP.NAV_BLOCK_BEGIN();
   GP.FORM_BEGIN("/wifi");    // начать форму, передать имя
   GP.SWITCH("wifimode", WiFimode);
   GP.TEXT("ssid", "SSID");
@@ -12,17 +20,12 @@ void build() {
   GP.BREAK();                        // перенос строки
   GP.SUBMIT("Подтвердить");         // кнопка Submit
   GP.FORM_END(); 
+  GP.NAV_BLOCK_END();
 
-  GP.HR();
-
-  GP.LABEL("Дверь");
-  GP.SWITCH("door", doorOpen); //false by default
-  GP.BREAK();
-
-  GP.HR();
-
+  GP.NAV_BLOCK_BEGIN();
   GP.LABEL("Log");
-  GP.EMBED(ссылка);
+  GP.EMBED("/log.txt");
+  GP.NAV_BLOCK_END();
   
   GP.BUILD_END();
 }
