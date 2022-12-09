@@ -28,7 +28,7 @@ bool doorOpen = false; // Дверь открыта
 
 void setup() {
   // подключаемся к сети
-  Serial.begin(9600);
+  Serial.begin(115200);
   LittleFS.begin();
   startWiFi();
   configurePortal();
