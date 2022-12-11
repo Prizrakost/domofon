@@ -19,7 +19,7 @@ String password = "admin";
 const char* login = "admin";
 const char* password = "admin";
 String logText = "qwe"; // Лог
-String keys[][4] = {
+String keys[2][4] = {
   {"1", "2", "1", "4"},
   {"5", "6", "0", "8"}
   };
