@@ -1,5 +1,5 @@
 #include <GyverPortal.h>
-#include <LittleFS.h>
+//#include <LittleFS.h>
 #include <ESP8266WiFi.h>
 
 // Настройки Wi-Fi
@@ -10,7 +10,7 @@ String STAssid;
 String STApassword;
 
 //GyverPortal portal;
-GyverPortal portal(&LittleFS);
+GyverPortal portal;
 /*
 String login = "admin";
 String password = "admin";
@@ -29,7 +29,6 @@ bool doorOpen = false; // Дверь открыта
 void setup() {
   // подключаемся к сети
   Serial.begin(115200);
-  LittleFS.begin();
   startWiFi();
   configurePortal();
   portal.start();

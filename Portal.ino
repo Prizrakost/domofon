@@ -57,8 +57,9 @@ void build() {
 
   GP.NAV_BLOCK_BEGIN();
   GP.FORM_BEGIN("/auth");
-  GP.TEXT("login", "Логин", login);
-  GP.PASS("password", "Пароль", password);
+  GP.TEXT("login", "Логин", String(login));
+  GP.BREAK();
+  GP.PASS("password", "Пароль", String(password));
   GP.BREAK();
   GP.SUBMIT("Подтвердить");
   GP.FORM_END();
@@ -157,12 +158,14 @@ void action() {
       }
     }
   }
-
-  if (portal.download()) {
+/*
+ *if (portal.download()) {
     // есть запрос, смотрим адрес (путь к файлу)
     Serial.println(portal.uri());
     portal.sendFile(portal.uri());
-  }
+  } 
+ */
+  
 }
 
 void configurePortal() {

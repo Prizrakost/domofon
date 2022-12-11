@@ -4,7 +4,7 @@ void startWiFi() {
 }
 
 void setupAP() {
-  WiFi.disconnect();
+  //WiFi.disconnect();
   WiFi.mode(WIFI_AP);
   delay(100);
   /*
@@ -18,8 +18,8 @@ void setupAP() {
 }
 
 void setupLocal() {
-  WiFi.softAPdisconnect();
-  WiFi.disconnect();
+  //WiFi.softAPdisconnect();
+  //WiFi.disconnect();
   WiFi.mode(WIFI_STA);
   delay(100);
   WiFi.hostname("domofon");
