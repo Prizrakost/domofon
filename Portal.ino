@@ -58,12 +58,16 @@ void build() {
   }
   GP.TABLE_END();
   GP.BREAK();
+  GP.SUBMIT("Записать");
+  /*
+  GP.BREAK();
   GP.TEXT("ID");
   GP.TEXT("name");
   GP.TEXT("access");
   GP.TEXT("time");
   GP.BREAK();
   GP.SUBMIT("Добавить");
+  */
   GP.FORM_END();
   GP.NAV_BLOCK_END();
 
