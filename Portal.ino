@@ -69,6 +69,14 @@ void build() {
   GP.SUBMIT("Добавить");
   */
   GP.FORM_END();
+  GP.BUTTON("newKey", "Добавить ключ", "", GP_GREEN, "", 0, 1);
+  //GP.BUTTON("newKey", "Добавить ключ");
+  if (newKeyButton) {
+    GP.PROMPT("ID");
+    GP.PROMPT("name");
+    GP.CONFIRM("access");
+    GP.PROMPT("time");
+  }
   GP.NAV_BLOCK_END();
 
   GP.NAV_BLOCK_BEGIN();
@@ -100,6 +108,11 @@ void action() {
     if (portal.click("door")) {
       doorOpen = portal.getBool();
       Serial.println(doorOpen);
+    }
+
+    if (portal.click("newKey")) {
+      newKeyButton = !newKeyButton;
+      Serial.println("newKeyButton: " + String(newKeyButton));
     }
   }
 

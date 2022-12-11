@@ -23,6 +23,7 @@ String keys[2][4] = {
   {"1", "2", "1", "4"},
   {"5", "6", "0", "8"}
   };
+bool newKeyButton = false;
 
 bool doorOpen = false; // Дверь открыта
 
