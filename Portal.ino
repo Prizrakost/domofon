@@ -35,13 +35,25 @@ void build() {
     GP.TR();
     for (int j = 0; j<5; j++) {
       GP.TD();
+      switch (j) {
+        case 2:
+          GP.CHECK("access/" + String(i), bool(keys[i][2]));
+          break;
+        case 4:
+          GP.BUTTON("edit/" + String(i), "Редактировать");
+          break;
+        default:
+          GP.TEXT("", "", keys[i][j]);
+          break;
+      }
+      /*
       if (j == 2) {
         GP.CHECK("access/" + String(i), bool(keys[i][2]));
       } else if (j == 4) {
         GP.BUTTON("edit/" + String(i), "Редактировать");
       } else {
         GP.TEXT("", "", keys[i][j]);
-      }
+      } */
     }
   }
   GP.TABLE_END();
