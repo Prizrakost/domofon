@@ -32,7 +32,8 @@ void build() {
   GP.FORM_BEGIN("/keys");
   GP.TABLE_BEGIN();
   for (int i = 0; i<sizeof(keys); i++) {
-    GP.TR();
+    if (not(keys[i][0] == "")) {
+      GP.TR();
     for (int j = 0; j<5; j++) {
       GP.TD();
       switch (j) {
@@ -46,6 +47,10 @@ void build() {
           GP.TEXT("", "", keys[i][j]);
           break;
       }
+    }
+    } else {
+      break;
+    }
       /*
       if (j == 2) {
         GP.CHECK("access/" + String(i), bool(keys[i][2]));
@@ -55,7 +60,6 @@ void build() {
         GP.TEXT("", "", keys[i][j]);
       } */
     }
-  }
   GP.TABLE_END();
   GP.BREAK();
   GP.SUBMIT("Записать");
@@ -113,6 +117,10 @@ void action() {
     if (portal.click("newKey")) {
       newKeyButton = !newKeyButton;
       Serial.println("newKeyButton: " + String(newKeyButton));
+    }
+
+    if (portal.click("ID")) {
+      Serial.println("new id");
     }
   }
 
