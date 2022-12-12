@@ -120,7 +120,29 @@ void action() {
     }
 
     if (portal.click("ID")) {
-      Serial.println("new id");
+      newKey[0] = portal.getString();
+      Serial.println("new id: " + newKey[0]);
+    }
+    if (portal.click("name")) {
+      newKey[1] = portal.getString();
+      Serial.println("new name: " + newKey[1]);
+    }
+    if (portal.click("access")) {
+      newKey[2] = String(int(portal.getBool()));
+      Serial.println("new access: " + newKey[2]);
+    }
+    if (portal.click("time")) {
+      newKey[3] = portal.getString();
+      Serial.println("new time: " + newKey[3]);
+      for (int i = 0; i<sizeof(keys); i++) {
+        if (keys[i][0] == "") {
+          keys[i][0] = newKey[0];
+          keys[i][1] = newKey[1];
+          keys[i][2] = newKey[1];
+          keys[i][3] = newKey[1];
+          break;
+        }
+      }
     }
   }
 

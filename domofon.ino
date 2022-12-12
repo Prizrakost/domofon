@@ -19,17 +19,24 @@ String password = "admin";
 const char* login = "admin";
 const char* password = "admin";
 String logText = "qwe"; // Лог
-String keys[2][4] = {
+String keys[200][4] = {
   {"1", "2", "1", "4"},
   {"5", "6", "0", "8"}
   };
 bool newKeyButton = false;
+String newKey[4] = {"", "", "", ""};
 
 bool doorOpen = false; // Дверь открыта
 
 void setup() {
   // подключаемся к сети
   Serial.begin(115200);
+  for (int i = 0; i<sizeof(keys); i++) {
+    keys[i][0] = "";
+    keys[i][1] = "";
+    keys[i][2] = "";
+    keys[i][3] = "";
+  }
   startWiFi();
   configurePortal();
   portal.start();
