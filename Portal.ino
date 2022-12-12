@@ -138,8 +138,8 @@ void action() {
         if (keys[i][0] == "") {
           keys[i][0] = newKey[0];
           keys[i][1] = newKey[1];
-          keys[i][2] = newKey[1];
-          keys[i][3] = newKey[1];
+          keys[i][2] = newKey[2];
+          keys[i][3] = newKey[3];
           break;
         }
       }
