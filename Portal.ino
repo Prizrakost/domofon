@@ -140,6 +140,7 @@ void action() {
           keys[i][1] = newKey[1];
           keys[i][2] = newKey[2];
           keys[i][3] = newKey[3];
+          // записать в файл
           break;
         }
       }
