@@ -31,13 +31,13 @@ bool doorOpen = false; // Дверь открыта
 void setup() {
   // подключаемся к сети
   Serial.begin(115200);
-  Serial.println("Serial began");
+  Serial.println("Serial began"); /*
   for (int i = 0; i<sizeof(keys); i++) {
     keys[i][0] = "";
     keys[i][1] = "";
     keys[i][2] = "";
     keys[i][3] = "";
-  }
+  } */
   Serial.println("Starting Wi-Fi");
   startWiFi();
   Serial.println("Wi-fFi started");
