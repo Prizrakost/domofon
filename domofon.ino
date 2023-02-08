@@ -1,22 +1,26 @@
 #include <GyverPortal.h>
 #include <ESP8266WiFi.h>
 
-// Настройки Wi-Fi
-bool WiFimode = false; // false = AP, true = STA
-String APssid = "domofon";
-String APpassword = "domofon123321";
-String STAssid;
-String STApassword;
-
 //GyverPortal portal;
 GyverPortal portal;
-/*
-String login = "admin";
-String password = "admin";
-*/
 // Брать из файла
-const char* login = "admin";
-const char* password = "admin";
+config_file = SD.open("config.txt", FILE_WRITE);
+void configure_file() {
+  // Настройка config.txt
+  DynamicJsonDocument doc(1024);
+
+  doc["login"] = "admin";
+  doc["password"] = "admin";
+  
+  doc["APssid"][0] = "domofon";
+  doc["APpassword"][1] = "domofon123321";
+
+  doc["STAssid"] = "";
+  doc["STApassword"] = "";
+
+  serializeJson(doc, config_file);
+}
+
 String logText = "qwe"; // Лог
 String keys[200][4] = {
   {"1", "2", "1", "4"},
@@ -28,6 +32,19 @@ String newKey[4] = {"", "", "", ""};
 bool doorOpen = false; // Дверь открыта
 
 void setup() {
+  // получение config файлов
+  if (!SD.exists(config_file)) {
+      configure_file();
+  }
+  DynamicJsonDocument doc(1024);
+  deserializeJson(doc, json);
+  const char* login = doc["login"];
+  const char* password = doc["password"];
+  String APssid = doc["APssid"];
+  String APpassword = doc["APpassword"];
+  String STAssid = doc["STAssid"];
+  String STApassword = doc["STApassword"];
+  
   // подключаемся к сети
   Serial.begin(115200);
   Serial.println("Serial began"); /*
