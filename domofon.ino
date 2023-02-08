@@ -1,5 +1,4 @@
 #include <GyverPortal.h>
-//#include <LittleFS.h>
 #include <ESP8266WiFi.h>
 
 // Настройки Wi-Fi
