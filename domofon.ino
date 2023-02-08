@@ -13,8 +13,8 @@ String APssid;
 String APpassword;
 String STAssid;
 String STApassword;
-String login;
-String password;
+char* login;
+char* password;
 void configure_file() {
   // Настройка config.txt
   config_file = SD.open("config.txt", FILE_WRITE);
@@ -61,10 +61,10 @@ void setup() {
   deserializeJson(doc, config_file);
   const char* login = doc["login"];
   const char* password = doc["password"];
-  APssid = doc["APssid"];
-  APpassword = doc["APpassword"];
-  STAssid = doc["STAssid"];
-  STApassword = doc["STApassword"];
+  APssid = doc["APssid"].as<String>();
+  APpassword = doc["APpassword"].as<String>();
+  STAssid = doc["STAssid"].as<String>();
+  STApassword = doc["STApassword"].as<String>();
   
   // подключаемся к сети
   /*
