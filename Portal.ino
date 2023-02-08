@@ -14,7 +14,10 @@ void build() {
   // Wi-Fi
   GP.NAV_BLOCK_BEGIN();
   GP.FORM_BEGIN("/wifi");    // начать форму, передать имя
+  GP.LABEL("Точка доступа");
   GP.SWITCH("wifimode", WiFimode);
+  GP.LABEL("Подключение к точке доступа");
+  GP.BREAK();
   GP.TEXT("ssid", "SSID");
   GP.PASS("wifipassword", "Password");
   GP.BREAK();                        // перенос строки
