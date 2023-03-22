@@ -8,6 +8,12 @@
 GyverPortal portal;
 // Брать из файла
 File config_file;
+const char* login;
+const char* password;
+String APssid;
+String APpassword;
+String STAssid;
+String STApassword;
 bool WiFimode = false; // false = AP, true = STA
 String APssid;
 String APpassword;
@@ -59,12 +65,21 @@ void setup() {
   config_file = SD.open("config.txt", FILE_READ);
   DynamicJsonDocument doc(1024);
   deserializeJson(doc, config_file);
+<<<<<<< Updated upstream
   const char* login = doc["login"];
   const char* password = doc["password"];
   APssid = doc["APssid"].as<String>();
   APpassword = doc["APpassword"].as<String>();
   STAssid = doc["STAssid"].as<String>();
   STApassword = doc["STApassword"].as<String>();
+=======
+  login = doc["login"];
+  password = doc["password"];
+  APssid = (String)doc["APssid"];
+  APpassword = (String)doc["APpassword"];
+  STAssid = (String)doc["STAssid"];
+  STApassword = (String)doc["STApassword"];
+>>>>>>> Stashed changes
   
   // подключаемся к сети
   /*
