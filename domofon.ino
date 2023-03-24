@@ -13,8 +13,10 @@ String APssid;
 String APpassword;
 String STAssid;
 String STApassword;
-char* login;
-char* password;
+//String login;
+//String password;
+char login[21];
+char password[21];
 void configure_file() {
   // Настройка config.txt
   config_file = SD.open("config.txt", FILE_WRITE);
@@ -59,8 +61,10 @@ void setup() {
   config_file = SD.open("config.txt", FILE_READ);
   DynamicJsonDocument doc(1024);
   deserializeJson(doc, config_file);
-  const char* login = doc["login"];
-  const char* password = doc["password"];
+  String loginString = (String)doc["login"];
+  loginString.toCharArray(login, 21);
+  String passwordString = (String)doc["password"];
+  passwordString.toCharArray(password, 21);
   APssid = doc["APssid"].as<String>();
   APpassword = doc["APpassword"].as<String>();
   STAssid = doc["STAssid"].as<String>();
