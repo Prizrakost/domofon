@@ -32,8 +32,6 @@ File keysFile;
 
 String cardID[10], cardOwner[10], cardPermission[10], cardDate[10];
 
-
-
 //GyverPortal portal;
 GyverPortal portal;
 // Брать из файла
@@ -98,6 +96,19 @@ void setup() {
   if (!(SD.exists("config.txt"))) {
       configure_file();
   }
+
+  keys = SD.open("keys.txt", FILE_READ);
+  uint8_t key_index = 0;
+  while (keys.available()) {
+    String raw_key = keys.readStringUntil('\n');
+    cardID[key_index] = (getPart(raw_key, ';', 0)); //эти массивы потом будут проверяться в соотвтетствии с индексом
+    cardOwner[key_index] = (getPart(raw_key, ';', 1));//то есть если у нас есть совпадение по 4 номеру из cardID
+    cardPermission[key_index] = (getPart(raw_key, ';', 2));//то надо выводить остальную информацию так же с 4-м номером
+    cardDate[key_index] = getPart(raw_key, ';', 4);//например - cardID[4], тогда соответствующие данные - cardOwner[4] ...
+    key_index += 1;
+  }
+  keys.close();
+
   config_file = SD.open("config.txt");
   StaticJsonDocument<1024> doc;
   deserializeJson(doc, config_file);
@@ -112,14 +123,6 @@ void setup() {
   STApassword = doc["STApassword"].as<String>();
   config_file.close();
   
-  // подключаемся к сети
-  /*
-  for (int i = 0; i<sizeof(keys); i++) {
-    keys[i][0] = "";
-    keys[i][1] = "";
-    keys[i][2] = "";
-    keys[i][3] = "";
-  } */
   Serial.println("Starting Wi-Fi");
   startWiFi();
   Serial.println("Wi-fFi started");
@@ -132,4 +135,18 @@ void setup() {
 
 void loop() {
   portal.tick();
+
+  if (gwiot7941e.update()) {
+    if (isCardGranted(String(gwiot7941e.getLastTagId()))){
+      makeLog("Access");
+      }
+    else{
+      makeLog("Deny");
+      }
+    digitalWrite(SOUND_pin_num, LOW);
+    delay(100);
+    digitalWrite(SOUND_pin_num, HIGH);
+    printDirectory(root, 0);
+  }
+
 }
