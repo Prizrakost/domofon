@@ -36,23 +36,6 @@ String STAssid;
 String STApassword;
 char login[21];
 char password[21];
-void configure_file() {
-  // Настройка config.txt
-  config_file = SD.open("config.txt", FILE_WRITE);
-  StaticJsonDocument<1024> doc;
-
-  doc["login"] = "admin";
-  doc["password"] = "admin";
-  
-  doc["APssid"] = "domofon";
-  doc["APpassword"] = "domofon123321";
-
-  doc["STAssid"] = "";
-  doc["STApassword"] = "";
-
-  serializeJson(doc, config_file);
-  config_file.close();
-}
 
 String logText = "qwe"; // Лог
 String keys[200][4] = {
@@ -65,19 +48,23 @@ String newKey[4] = {"", "", "", ""};
 bool doorOpen = false; // Дверь открыта
 
 void setup() {
+  // Инициализация Serial
+  Serial.begin(9600);
+  while (!Serial);
+  Serial.println("Serial began");
+
+  // работа с rfid
+  gwiot7941e.begin(GWIOT_7941E_RX_PIN);
+
+  // Настройка пинов
   digitalWrite(SOUND_pin_num, HIGH);
   pinMode(SOUND_pin_num, OUTPUT);
   pinMode(BUTTON_pin, INPUT);
+
+  // a
   root = SD.open("/");
   printDirectory(root, 0);
 
-  SD.remove("logs/logs.txt");
-  
-  gwiot7941e.begin(GWIOT_7941E_RX_PIN);
-
-  Serial.begin(9600);
-  Serial.println("Serial began");
-  // получение config файлов
   Serial.print("Initializing SD card...");
   if (!SD.begin(15)) {
     Serial.println("initialization failed!");
@@ -88,31 +75,9 @@ void setup() {
       configure_file();
   }
 
-  keysFile = SD.open("keys.txt", FILE_READ);
-  uint8_t key_index = 0;
-  while (keysFile.available()) {
-    String raw_key = keysFile.readStringUntil('\n');
-    cardID[key_index] = (getPart(raw_key, ';', 0)); //эти массивы потом будут проверяться в соотвтетствии с индексом
-    cardOwner[key_index] = (getPart(raw_key, ';', 1));//то есть если у нас есть совпадение по 4 номеру из cardID
-    cardPermission[key_index] = (getPart(raw_key, ';', 2));//то надо выводить остальную информацию так же с 4-м номером
-    cardDate[key_index] = getPart(raw_key, ';', 4);//например - cardID[4], тогда соответствующие данные - cardOwner[4] ...
-    key_index += 1;
-  }
-  keysFile.close();
+  read_keys_file();
 
-  config_file = SD.open("config.txt");
-  StaticJsonDocument<1024> doc;
-  deserializeJson(doc, config_file);
-  serializeJson(doc, Serial);
-  String loginString = (String)doc["login"];
-  loginString.toCharArray(login, 21);
-  String passwordString = (String)doc["password"];
-  passwordString.toCharArray(password, 21);
-  APssid = (String)doc["APssid"];
-  APpassword = (String)doc["APpassword"];
-  STAssid = doc["STAssid"].as<String>();
-  STApassword = doc["STApassword"].as<String>();
-  config_file.close();
+  read_config_file();
   
   Serial.println("Starting Wi-Fi");
   startWiFi();
