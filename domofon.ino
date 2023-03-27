@@ -9,6 +9,14 @@ GyverPortal portal;
 // Брать из файла
 File config_file;
 bool WiFimode = false; // false = AP, true = STA
+String APssid;
+String APpassword;
+String STAssid;
+String STApassword;
+//String login;
+//String password;
+char login[21];
+char password[21];
 void configure_file() {
   // Настройка config.txt
   config_file = SD.open("config.txt", FILE_WRITE);
@@ -42,7 +50,7 @@ void setup() {
   Serial.println("Serial began");
   // получение config файлов
   Serial.print("Initializing SD card...");
-  if (!SD.begin(4)) {
+  if (!SD.begin(8)) {
     Serial.println("initialization failed!");
     while (1);
   }
@@ -50,15 +58,17 @@ void setup() {
   if (!(SD.exists("config.txt"))) {
       configure_file();
   }
-  config_file = SD.open("config.txt", FILE_WRITE);
+  config_file = SD.open("config.txt", FILE_READ);
   DynamicJsonDocument doc(1024);
   deserializeJson(doc, config_file);
-  const char* login = doc["login"];
-  const char* password = doc["password"];
-  String APssid = doc["APssid"];
-  String APpassword = doc["APpassword"];
-  String STAssid = doc["STAssid"];
-  String STApassword = doc["STApassword"];
+  String loginString = (String)doc["login"];
+  loginString.toCharArray(login, 21);
+  String passwordString = (String)doc["password"];
+  passwordString.toCharArray(password, 21);
+  APssid = doc["APssid"].as<String>();
+  APpassword = doc["APpassword"].as<String>();
+  STAssid = doc["STAssid"].as<String>();
+  STApassword = doc["STApassword"].as<String>();
   
   // подключаемся к сети
   /*
