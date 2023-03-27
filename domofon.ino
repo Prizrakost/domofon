@@ -50,7 +50,7 @@ void setup() {
   Serial.println("Serial began");
   // получение config файлов
   Serial.print("Initializing SD card...");
-  if (!SD.begin(4)) {
+  if (!SD.begin(8)) {
     Serial.println("initialization failed!");
     while (1);
   }
