@@ -22,4 +22,12 @@ void setupLocal() {
   delay(100);
   WiFi.hostname("domofon");
   WiFi.begin(STAssid, STApassword);
+  while ( WiFi.status() != WL_CONNECTED )
+  {
+    delay ( 500 );
+    Serial.print ( "." );
+
+    timeClient.begin();
+  }
+  Serial.println(WiFi.localIP() + "\n");
 }

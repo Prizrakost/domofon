@@ -3,6 +3,36 @@
 #include <SD.h>
 #include <SPI.h>
 #include <ArduinoJson.h>
+#include <Gwiot7941e.h>
+#include <Wire.h>
+#include <NTPClient.h>
+#include <WiFiUdp.h>
+#include <UnixTime.h>
+
+#define SD_pin_num 15
+#define GWIOT_7941E_RX_PIN 4
+#define SOUND_pin_num 2
+#define BUTTON_pin 10
+Gwiot7941e gwiot7941e;
+
+UnixTime stamp(10);
+/*
+const char *ssid     = "Pandorum";
+const char *password = "TeRRaRiUm2013";
+*/
+
+const long utcOffsetInSeconds = 0;
+
+WiFiUDP ntpUDP;
+NTPClient timeClient(ntpUDP, "pool.ntp.org", utcOffsetInSeconds);
+
+File root;
+File myFile;
+File keysFile;
+
+String cardID[10], cardOwner[10], cardPermission[10], cardDate[10];
+
+
 
 //GyverPortal portal;
 GyverPortal portal;
@@ -46,7 +76,17 @@ String newKey[4] = {"", "", "", ""};
 bool doorOpen = false; // Дверь открыта
 
 void setup() {
-  Serial.begin(115200);
+  digitalWrite(SOUND_pin_num, HIGH);
+  pinMode(SOUND_pin_num, OUTPUT);
+  pinMode(BUTTON_pin, INPUT);
+  root = SD.open("/");
+  printDirectory(root, 0);
+
+  SD.remove("logs/logs.txt");
+  
+  gwiot7941e.begin(GWIOT_7941E_RX_PIN);
+
+  Serial.begin(9600);
   Serial.println("Serial began");
   // получение config файлов
   Serial.print("Initializing SD card...");
