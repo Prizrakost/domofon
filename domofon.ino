@@ -97,17 +97,17 @@ void setup() {
       configure_file();
   }
 
-  keys = SD.open("keys.txt", FILE_READ);
+  keysFile = SD.open("keys.txt", FILE_READ);
   uint8_t key_index = 0;
-  while (keys.available()) {
-    String raw_key = keys.readStringUntil('\n');
+  while (keysFile.available()) {
+    String raw_key = keysFile.readStringUntil('\n');
     cardID[key_index] = (getPart(raw_key, ';', 0)); //эти массивы потом будут проверяться в соотвтетствии с индексом
     cardOwner[key_index] = (getPart(raw_key, ';', 1));//то есть если у нас есть совпадение по 4 номеру из cardID
     cardPermission[key_index] = (getPart(raw_key, ';', 2));//то надо выводить остальную информацию так же с 4-м номером
     cardDate[key_index] = getPart(raw_key, ';', 4);//например - cardID[4], тогда соответствующие данные - cardOwner[4] ...
     key_index += 1;
   }
-  keys.close();
+  keysFile.close();
 
   config_file = SD.open("config.txt");
   StaticJsonDocument<1024> doc;
