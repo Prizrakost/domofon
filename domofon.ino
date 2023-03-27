@@ -8,7 +8,6 @@
 GyverPortal portal;
 // Брать из файла
 File config_file;
-String config_file_str;
 bool WiFimode = false; // false = AP, true = STA
 String APssid;
 String APpassword;
@@ -21,7 +20,7 @@ char password[21];
 void configure_file() {
   // Настройка config.txt
   config_file = SD.open("config.txt", FILE_WRITE);
-  DynamicJsonDocument doc(1024);
+  StaticJsonDocument<1024> doc;
 
   doc["login"] = "admin";
   doc["password"] = "admin";
@@ -32,7 +31,6 @@ void configure_file() {
   doc["STAssid"] = "";
   doc["STApassword"] = "";
 
-  config_file_str = "";
   serializeJson(doc, config_file);
   config_file.close();
 }
@@ -61,8 +59,9 @@ void setup() {
       configure_file();
   }
   config_file = SD.open("config.txt");
-  DynamicJsonDocument doc(1024);
+  StaticJsonDocument<1024> doc;
   deserializeJson(doc, config_file);
+  serializeJson(doc, Serial);
   String loginString = (String)doc["login"];
   loginString.toCharArray(login, 21);
   String passwordString = (String)doc["password"];
