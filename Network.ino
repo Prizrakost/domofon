@@ -13,6 +13,7 @@ void setupAP() {
   WiFi.softAPConfig(local_ip, gateway, subnet);
   WiFi.softAP(APssid, APpassword);
   delay(500);
+  Serial.println("AP ssid: " + APssid);
 }
 
 void setupLocal() {

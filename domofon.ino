@@ -14,7 +14,7 @@
 #define SOUND_pin_num 2
 #define BUTTON_pin 10
 
-Gwiot7941e gwiot7941e;
+Gwiot7941e rfid;
 UnixTime stamp(10);
 /*
 const char *ssid     = "Pandorum";
@@ -54,26 +54,40 @@ void setup() {
   Serial.println("Serial began");
 
   // работа с rfid
-  gwiot7941e.begin(GWIOT_7941E_RX_PIN);
+  rfid.begin(GWIOT_7941E_RX_PIN);
+  int i = 0;
+  Serial.println("Ждём проверки карты в течении 10 сек.");
+  while (!rfid.update())
+  {
+    i++;
+    delay(100);
+    // Мигнуть светодиодом
+    if (i > 100)
+    {
+      Serial.println("RFID сдох");
+      break;
+      // Ошибку
+    }
+  }
+
+  // a
+  Serial.print("Initializing SD card...");
+  if (!SD.begin(SD_pin_num)) {
+    delay(100);
+    Serial.println("initialization failed!");
+    while (1);
+  }
+  root = SD.open("/");
+  printDirectory(root, 0);
+  Serial.println("initialization done.");
+  if (!(SD.exists("config.txt"))) {
+      configure_file();
+  }
 
   // Настройка пинов
   digitalWrite(SOUND_pin_num, HIGH);
   pinMode(SOUND_pin_num, OUTPUT);
   pinMode(BUTTON_pin, INPUT);
-
-  // a
-  root = SD.open("/");
-  printDirectory(root, 0);
-
-  Serial.print("Initializing SD card...");
-  if (!SD.begin(15)) {
-    Serial.println("initialization failed!");
-    while (1);
-  }
-  Serial.println("initialization done.");
-  if (!(SD.exists("config.txt"))) {
-      configure_file();
-  }
 
   read_keys_file();
 
@@ -82,9 +96,6 @@ void setup() {
   Serial.println("Starting Wi-Fi");
   startWiFi();
   Serial.println("Wi-fFi started");
-  if (!WiFimode) {
-    Serial.println("AP ssid: " + APssid);
-    }
   configurePortal();
   portal.start();
 }
@@ -92,8 +103,8 @@ void setup() {
 void loop() {
   portal.tick();
 
-  if (gwiot7941e.update()) {
-    if (isCardGranted(String(gwiot7941e.getLastTagId()))){
+  if (rfid.update()) {
+    if (isCardGranted(String(rfid.getLastTagId()))){
       makeLog("Access");
       }
     else{

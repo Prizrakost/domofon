@@ -70,7 +70,7 @@ void makeLog(String message){
   myFile = SD.open(String("logs") + String("/") + _year + String("/") + String(_month) + String("/") + _day + String(".txt"), FILE_WRITE);
   myFile.print(nowTime());
   myFile.print(" ");
-  myFile.print(gwiot7941e.getLastTagId(), HEX);
+  myFile.print(rfid.getLastTagId(), HEX);
   myFile.print(" ");
   myFile.println(message);
   myFile.close();
