@@ -13,36 +13,27 @@
 #define GWIOT_7941E_RX_PIN 4
 #define SOUND_pin_num 2
 #define BUTTON_pin 10
-Gwiot7941e gwiot7941e;
 
+Gwiot7941e gwiot7941e;
 UnixTime stamp(10);
 /*
 const char *ssid     = "Pandorum";
 const char *password = "TeRRaRiUm2013";
 */
-
 const long utcOffsetInSeconds = 0;
-
 WiFiUDP ntpUDP;
 NTPClient timeClient(ntpUDP, "pool.ntp.org", utcOffsetInSeconds);
-
 File root;
 File myFile;
 File keysFile;
-
 String cardID[10], cardOwner[10], cardPermission[10], cardDate[10];
-
-//GyverPortal portal;
 GyverPortal portal;
-// Брать из файла
 File config_file;
 bool WiFimode = false; // false = AP, true = STA
 String APssid;
 String APpassword;
 String STAssid;
 String STApassword;
-//String login;
-//String password;
 char login[21];
 char password[21];
 void configure_file() {
