@@ -1,11 +1,13 @@
 void configure_file() {
   // Настройка config.txt
+  Serial.println("CREATING NEW config.txt");
   config_file = SD.open("config.txt", FILE_WRITE);
   StaticJsonDocument<1024> doc;
 
   doc["login"] = "admin";
   doc["password"] = "admin";
-  
+
+  doc["WiFimode"] = false;
   doc["APssid"] = "domofon";
   doc["APpassword"] = "domofon123321";
 
@@ -25,10 +27,33 @@ void read_config_file(){
   loginString.toCharArray(login, 21);
   String passwordString = (String)doc["password"];
   passwordString.toCharArray(password, 21);
+  WiFimode = (bool)doc["WiFimode"];
   APssid = (String)doc["APssid"];
   APpassword = (String)doc["APpassword"];
   STAssid = doc["STAssid"].as<String>();
   STApassword = doc["STApassword"].as<String>();
+  config_file.close();
+}
+
+void write_config_file() {
+  config_file = SD.open("config.txt", FILE_WRITE);
+  config_file.write("");
+  StaticJsonDocument<1024> doc;
+  doc["login"] = login;
+  doc["password"] = password;
+  doc["WiFimode"] = WiFimode;
+  doc["APssid"] = APssid;
+  doc["APpassword"] = APpassword;
+  doc["STAssid"] = STAssid;
+  doc["STApassword"] = STApassword;
+  serializeJson(doc, config_file);
+  Serial.print("In vars: ");
+  serializeJson(doc, Serial);
+  Serial.println();
+  Serial.print("In file: ");
+  StaticJsonDocument<1024> docq;
+  deserializeJson(docq, config_file);
+  serializeJson(docq, Serial);
   config_file.close();
 }
 

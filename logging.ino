@@ -78,10 +78,49 @@ void makeLog(String message){
   //Вывод сегодняшних логов в serial
   myFile = SD.open(String("logs") + String("/") + _year + String("/") + String(_month) + String("/") + _day + String(".txt"), FILE_READ);
   Serial.println("Reading file...");
+  //while (myFile.available()) {
+  //Serial.write(myFile.read());
+  //}
+  String _toWrite = "";
   while (myFile.available()) {
-  Serial.write(myFile.read());
+    _toWrite += (char)myFile.read();
+  }
+  logText = _toWrite;
+  myFile.close();
+}
+
+// чтение из лога
+String readLog()
+{
+  String _day;
+  String _month;
+  String _year;
+
+
+  timeClient.update();
+  stamp.getDateTime(timeClient.getEpochTime());
+
+  _day = String(stamp.day);
+  _month = String(stamp.month);
+  _year = String(stamp.year);
+
+  String q = "";
+  char w;
+  myFile = SD.open(String("logs") + String("/") + _year + String("/") + String(_month) + String("/") + _day + String(".txt"), FILE_READ);
+  Serial.println("Reading file...");
+  while (myFile.available()) {
+    w = myFile.read();
+    if (w != -1)
+    {
+      q += (char)w;
+    }
+    else
+    {
+      break;
+    }
   }
   myFile.close();
+  return q;
 }
 
 //получение даты через ntp сервер

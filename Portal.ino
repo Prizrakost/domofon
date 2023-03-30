@@ -27,7 +27,7 @@ void build() {
 
   GP.NAV_BLOCK_BEGIN();
   GP.LABEL("Log");
-  GP.AREA("log", 100, logText);
+  GP.AREA("log"), 20, logText, "100%", true;
   GP.NAV_BLOCK_END();
 
   // Ключи
@@ -104,7 +104,7 @@ void action() {
   if (portal.update()) {
     portal.updateBool("door", doorOpen);
     if (portal.update("log")) {
-      // Читать из файла
+      //logText = readLog();
       portal.answer(logText);
     }
   }
@@ -202,7 +202,7 @@ void action() {
       WiFimode = portal.getBool("wifimode");
       Serial.print("WiFi mode: ");
 
-      if (WiFimode) {
+      if (!WiFimode) {
         Serial.println("AP");
         APssid = portal.getString("ssid");
         Serial.print("AP SSID: ");
@@ -219,6 +219,7 @@ void action() {
         Serial.print("STA Password: ");
         Serial.println(STApassword);
       }
+      write_config_file();
     }
   }
 /*

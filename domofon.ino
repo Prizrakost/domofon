@@ -37,7 +37,7 @@ String STApassword;
 char login[21];
 char password[21];
 
-String logText = "qwe"; // Лог
+String logText = ""; // Лог
 String keys[200][4] = {
   {"1", "2", "1", "4"},
   {"5", "6", "0", "8"}
@@ -60,9 +60,9 @@ void setup() {
   while (!rfid.update())
   {
     i++;
-    delay(100);
+    delay(10);
     // Мигнуть светодиодом
-    if (i > 100)
+    if (i > 1000)
     {
       Serial.println("RFID сдох");
       break;
@@ -75,7 +75,7 @@ void setup() {
   if (!SD.begin(SD_pin_num)) {
     delay(100);
     Serial.println("initialization failed!");
-    while (1);
+    while (1) {delay(10000);}
   }
   root = SD.open("/");
   printDirectory(root, 0);
@@ -113,7 +113,7 @@ void loop() {
     digitalWrite(SOUND_pin_num, LOW);
     delay(100);
     digitalWrite(SOUND_pin_num, HIGH);
-    printDirectory(root, 0);
+    //printDirectory(root, 0);
   }
 
 }
