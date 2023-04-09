@@ -105,10 +105,10 @@ void loop() {
 
   if (rfid.update()) {
     if (isCardGranted(String(rfid.getLastTagId()))){
-      makeLog("Access");
+      makeLog(String(rfid.getLastTagId()) + " Access");
       }
     else{
-      makeLog("Deny");
+      makeLog(String(rfid.getLastTagId()) + " Deny");
       }
     digitalWrite(SOUND_pin_num, LOW);
     delay(100);
