@@ -13,6 +13,9 @@
 #define GWIOT_7941E_RX_PIN 4
 #define SOUND_pin_num 2
 #define BUTTON_pin 10
+#define DOOR_pin 9
+#define RED_LED 3
+#define GREEN_LED 1
 
 Gwiot7941e rfid;
 UnixTime stamp(10);
@@ -45,8 +48,6 @@ String keys[200][4] = {
 bool newKeyButton = false;
 String newKey[4] = {"", "", "", ""};
 
-bool doorOpen = false; // Дверь открыта
-
 void setup() {
   // Инициализация Serial
   Serial.begin(9600);
@@ -65,6 +66,7 @@ void setup() {
     if (i > 1000)
     {
       Serial.println("RFID сдох");
+      //лучше поставить бесконечный цикл, esp можно перезапустить
       break;
       // Ошибку
     }
@@ -88,6 +90,10 @@ void setup() {
   digitalWrite(SOUND_pin_num, HIGH);
   pinMode(SOUND_pin_num, OUTPUT);
   pinMode(BUTTON_pin, INPUT);
+  pinMode(DOOR_pin, OUTPUT);
+  pinMode(RED_LED, OUTPUT);
+  pinMode(GREE_LED, OUTPUT);
+  
 
   read_keys_file();
 
@@ -98,6 +104,9 @@ void setup() {
   Serial.println("Wi-fFi started");
   configurePortal();
   portal.start();
+  
+  //если код доходит сюда, то ошибок нет - дверь закрывается
+  digitalWrite(DOOR_pin, HIGH);
 }
 
 void loop() {
@@ -106,10 +115,19 @@ void loop() {
   if (rfid.update()) {
     if (isCardGranted(String(rfid.getLastTagId()))){
       makeLog(String(rfid.getLastTagId()) + " Access");
+      digitalWrite(DOOR_pin, LOW);
+      digitalWrite(GREEN_LED, HIGH);
+      delay(3000) //думаю, три секунды будет достаточно для открытия двери, она потом примагнитится
+      digitalWrite(DOOR_pin, HIGH);
+      digitalWrite(GREEN_LED, HIGH);
       }
     else{
       makeLog(String(rfid.getLastTagId()) + " Deny");
+      digitalWrite(GREEN_LED, HIGH);
+      delay(3000) //думаю, три секунды будет достаточно для открытия двери, она потом примагнитится
+      digitalWrite(GREEN_LED, HIGH);
       }
+    //СДЕСЬ НУЖНО НАСТРОИТЬ ЧАСТОТЫ ДИНАМИКА - НА ДОПУСК ВЫСОКУЮ, НА НЕДОПУСК НИЗКУЮ
     digitalWrite(SOUND_pin_num, LOW);
     delay(100);
     digitalWrite(SOUND_pin_num, HIGH);
