@@ -77,7 +77,7 @@ void setup() {
   if (!SD.begin(SD_pin_num)) {
     delay(100);
     Serial.println("initialization failed!");
-    while (1) {delay(10000);}
+    //while (1) {delay(10000);}
   }
   root = SD.open("/");
   printDirectory(root, 0);

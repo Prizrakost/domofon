@@ -54,6 +54,7 @@ void write_config_file() {
   StaticJsonDocument<1024> docq;
   deserializeJson(docq, config_file);
   serializeJson(docq, Serial);
+  Serial.println();
   config_file.close();
 }
 

@@ -14,6 +14,7 @@ void setupAP() {
   WiFi.softAP(APssid, APpassword);
   delay(500);
   Serial.println("AP ssid: " + APssid);
+  Serial.println(WiFi.localIP() + "\n");
 }
 
 void setupLocal() {
@@ -23,12 +24,19 @@ void setupLocal() {
   delay(100);
   WiFi.hostname("domofon");
   WiFi.begin(STAssid, STApassword);
+  int i = 0;
   while ( WiFi.status() != WL_CONNECTED )
   {
     delay ( 500 );
     Serial.print ( "." );
-
-    timeClient.begin();
+    if (i==10) {
+      Serial.println("Can't connect to wifi, falling back to AP mode");
+      WiFimode = false;
+      startWiFi();
+      break;
+    }
+    i++;
   }
+  timeClient.begin();
   Serial.println(WiFi.localIP() + "\n");
 }
