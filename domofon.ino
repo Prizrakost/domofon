@@ -47,6 +47,7 @@ String keys[200][4] = {
   };
 bool newKeyButton = false;
 String newKey[4] = {"", "", "", ""};
+bool doorOpen = false;
 
 void setup() {
   // Инициализация Serial
@@ -80,7 +81,7 @@ void setup() {
     //while (1) {delay(10000);}
   }
   root = SD.open("/");
-  printDirectory(root, 0);
+  //printDirectory(root, 0);
   Serial.println("initialization done.");
   if (!(SD.exists("config.txt"))) {
       configure_file();
@@ -92,7 +93,7 @@ void setup() {
   pinMode(BUTTON_pin, INPUT);
   pinMode(DOOR_pin, OUTPUT);
   pinMode(RED_LED, OUTPUT);
-  pinMode(GREE_LED, OUTPUT);
+  pinMode(GREEN_LED, OUTPUT);
   
 
   read_keys_file();
@@ -117,14 +118,14 @@ void loop() {
       makeLog(String(rfid.getLastTagId()) + " Access");
       digitalWrite(DOOR_pin, LOW);
       digitalWrite(GREEN_LED, HIGH);
-      delay(3000) //думаю, три секунды будет достаточно для открытия двери, она потом примагнитится
+      delay(3000); //думаю, три секунды будет достаточно для открытия двери, она потом примагнитится
       digitalWrite(DOOR_pin, HIGH);
       digitalWrite(GREEN_LED, HIGH);
       }
     else{
       makeLog(String(rfid.getLastTagId()) + " Deny");
       digitalWrite(GREEN_LED, HIGH);
-      delay(3000) //думаю, три секунды будет достаточно для открытия двери, она потом примагнитится
+      delay(3000); //думаю, три секунды будет достаточно для открытия двери, она потом примагнитится
       digitalWrite(GREEN_LED, HIGH);
       }
     //СДЕСЬ НУЖНО НАСТРОИТЬ ЧАСТОТЫ ДИНАМИКА - НА ДОПУСК ВЫСОКУЮ, НА НЕДОПУСК НИЗКУЮ

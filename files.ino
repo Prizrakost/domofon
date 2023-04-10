@@ -36,8 +36,8 @@ void read_config_file(){
 }
 
 void write_config_file() {
+  SD.remove("config.txt");
   config_file = SD.open("config.txt", FILE_WRITE);
-  config_file.write("");
   StaticJsonDocument<1024> doc;
   doc["login"] = login;
   doc["password"] = password;
