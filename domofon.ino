@@ -126,7 +126,7 @@ void loop() {
     else{
       makeLog(lastRfidId + " Deny");
       digitalWrite(RED_LED, HIGH);
-      delay(3000); //думаю, три секунды будет достаточно для открытия двери, она потом примагнитится
+      delay(500);
       digitalWrite(RED_LED, LOW);
       }
     //СДЕСЬ НУЖНО НАСТРОИТЬ ЧАСТОТЫ ДИНАМИКА - НА ДОПУСК ВЫСОКУЮ, НА НЕДОПУСК НИЗКУЮ
