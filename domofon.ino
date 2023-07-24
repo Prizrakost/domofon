@@ -66,7 +66,7 @@ void setup() {
     // Мигнуть светодиодом
     if (i > 1000)
     {
-      Serial.println("RFID сдох");
+      Serial.println("Считыватель неисправен");
       //лучше поставить бесконечный цикл, esp можно перезапустить
       break;
       // Ошибку
@@ -114,19 +114,20 @@ void loop() {
   portal.tick();
 
   if (rfid.update()) {
-    if (isCardGranted(String(rfid.getLastTagId()))){
-      makeLog(String(rfid.getLastTagId()) + " Access");
+    string lastRfidId = String(rfid.getLastTagId());
+    if (isCardGranted(lastRfidId)){
+      makeLog(lastRfidId + " Access");
       digitalWrite(DOOR_pin, LOW);
       digitalWrite(GREEN_LED, HIGH);
       delay(3000); //думаю, три секунды будет достаточно для открытия двери, она потом примагнитится
       digitalWrite(DOOR_pin, HIGH);
-      digitalWrite(GREEN_LED, HIGH);
+      digitalWrite(GREEN_LED, LOW);
       }
     else{
-      makeLog(String(rfid.getLastTagId()) + " Deny");
-      digitalWrite(GREEN_LED, HIGH);
+      makeLog(lastRfidId + " Deny");
+      digitalWrite(RED_LED, HIGH);
       delay(3000); //думаю, три секунды будет достаточно для открытия двери, она потом примагнитится
-      digitalWrite(GREEN_LED, HIGH);
+      digitalWrite(RED_LED, LOW);
       }
     //СДЕСЬ НУЖНО НАСТРОИТЬ ЧАСТОТЫ ДИНАМИКА - НА ДОПУСК ВЫСОКУЮ, НА НЕДОПУСК НИЗКУЮ
     digitalWrite(SOUND_pin_num, LOW);
