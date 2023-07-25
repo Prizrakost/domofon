@@ -19,10 +19,6 @@
 
 Gwiot7941e rfid;
 UnixTime stamp(10);
-/*
-const char *ssid     = "Pandorum";
-const char *password = "TeRRaRiUm2013";
-*/
 const long utcOffsetInSeconds = 0;
 WiFiUDP ntpUDP;
 NTPClient timeClient(ntpUDP, "pool.ntp.org", utcOffsetInSeconds);
@@ -118,18 +114,17 @@ void loop() {
     if (isCardGranted(lastRfidId)){
       makeLog(lastRfidId + " Access");
       digitalWrite(DOOR_pin, LOW);
-      digitalWrite(GREEN_LED, HIGH);
+      analogWrite(GREEN_LED, 255);
       delay(3000); //думаю, три секунды будет достаточно для открытия двери, она потом примагнитится
       digitalWrite(DOOR_pin, HIGH);
-      digitalWrite(GREEN_LED, LOW);
+      analoglWrite(GREEN_LED, 0);
       }
     else{
       makeLog(lastRfidId + " Deny");
-      digitalWrite(RED_LED, HIGH);
+      analogWrite(RED_LED, 255);
       delay(500);
-      digitalWrite(RED_LED, LOW);
+      analogWrite(RED_LED, 0);
       }
-    //СДЕСЬ НУЖНО НАСТРОИТЬ ЧАСТОТЫ ДИНАМИКА - НА ДОПУСК ВЫСОКУЮ, НА НЕДОПУСК НИЗКУЮ
     digitalWrite(SOUND_pin_num, LOW);
     delay(100);
     digitalWrite(SOUND_pin_num, HIGH);
