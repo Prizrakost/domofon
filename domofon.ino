@@ -63,8 +63,7 @@ void setup() {
     if (i > 1000)
     {
       Serial.println("Считыватель неисправен");
-      //лучше поставить бесконечный цикл, esp можно перезапустить
-      break;
+      while (1) delay(10000);
       // Ошибку
     }
   }
@@ -73,8 +72,8 @@ void setup() {
   Serial.print("Initializing SD card...");
   if (!SD.begin(SD_pin_num)) {
     delay(100);
-    Serial.println("initialization failed!");
-    //while (1) {delay(10000);}
+    Serial.println("Initialization failed! Неполадки с SD картой!");
+    while (1) delay(10000);
   }
   root = SD.open("/");
   //printDirectory(root, 0);
@@ -88,10 +87,10 @@ void setup() {
   pinMode(SOUND_pin_num, OUTPUT);
   pinMode(BUTTON_pin, INPUT);
   pinMode(DOOR_pin, OUTPUT);
+  digitalWrite(DOOR_pin, LOW);
   pinMode(RED_LED, OUTPUT);
   pinMode(GREEN_LED, OUTPUT);
   
-
   read_keys_file();
 
   read_config_file();
@@ -99,8 +98,13 @@ void setup() {
   Serial.println("Starting Wi-Fi");
   startWiFi();
   Serial.println("Wi-fFi started");
-  configurePortal();
-  portal.start();
+  try {
+    configurePortal();
+    portal.start();
+  }
+  catch {
+    Serial.println("Ошибка в построении сайта! Дверь будет работать без сайта.");
+  }
   
   //если код доходит сюда, то ошибок нет - дверь закрывается
   digitalWrite(DOOR_pin, HIGH);
