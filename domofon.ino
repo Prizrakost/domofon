@@ -51,6 +51,15 @@ void setup() {
   while (!Serial);
   Serial.println("Serial began");
 
+  // Настройка пинов
+  digitalWrite(SOUND_pin_num, LOW);
+  pinMode(SOUND_pin_num, OUTPUT);
+  pinMode(BUTTON_pin, INPUT);
+  pinMode(DOOR_pin, OUTPUT);
+  digitalWrite(DOOR_pin, LOW);
+  pinMode(RED_LED, OUTPUT);
+  pinMode(GREEN_LED, OUTPUT);
+  
   // работа с rfid
   rfid.begin(GWIOT_7941E_RX_PIN);
   int i = 0;
@@ -63,6 +72,7 @@ void setup() {
     if (i > 1000)
     {
       Serial.println("Считыватель неисправен");
+      digitalWrite(RED_LED, HIGH);
       while (1) delay(10000);
       // Ошибку
     }
@@ -73,6 +83,7 @@ void setup() {
   if (!SD.begin(SD_pin_num)) {
     delay(100);
     Serial.println("Initialization failed! Неполадки с SD картой!");
+    digitalWrite(SOUND_pin_num, HIGH);
     while (1) delay(10000);
   }
   root = SD.open("/");
@@ -81,15 +92,6 @@ void setup() {
   if (!(SD.exists("config.txt"))) {
       configure_file();
   }
-
-  // Настройка пинов
-  digitalWrite(SOUND_pin_num, HIGH);
-  pinMode(SOUND_pin_num, OUTPUT);
-  pinMode(BUTTON_pin, INPUT);
-  pinMode(DOOR_pin, OUTPUT);
-  digitalWrite(DOOR_pin, LOW);
-  pinMode(RED_LED, OUTPUT);
-  pinMode(GREEN_LED, OUTPUT);
   
   read_keys_file();
 
@@ -104,6 +106,15 @@ void setup() {
   }
   catch {
     Serial.println("Ошибка в построении сайта! Дверь будет работать без сайта.");
+    for (byte i = 0, i<5, i++)
+    {
+      digitalWrite(GREEN_PIN, HIGH);
+      delay(1000);
+      digitalWrite(GREEN_PIN, LOW);
+      digitalWrite(RED_PIN, HIGH);
+      delay(1000);
+      digitalWrite(RED_PIN, LOW);
+    }
   }
   
   //если код доходит сюда, то ошибок нет - дверь закрывается
@@ -118,20 +129,20 @@ void loop() {
     if (isCardGranted(lastRfidId)){
       makeLog(lastRfidId + " Access");
       digitalWrite(DOOR_pin, LOW);
-      analogWrite(GREEN_LED, 255);
+      digitalWrite(GREEN_LED, HIGH);
       delay(3000); //думаю, три секунды будет достаточно для открытия двери, она потом примагнитится
       digitalWrite(DOOR_pin, HIGH);
-      analoglWrite(GREEN_LED, 0);
+      digitalWrite(GREEN_LED, LOW);
       }
     else{
       makeLog(lastRfidId + " Deny");
-      analogWrite(RED_LED, 255);
+      digitalWrite(RED_LED, HIGH);
       delay(500);
-      analogWrite(RED_LED, 0);
+      digitalWrite(RED_LED, LOW);
       }
-    digitalWrite(SOUND_pin_num, LOW);
-    delay(100);
     digitalWrite(SOUND_pin_num, HIGH);
+    delay(100);
+    digitalWrite(SOUND_pin_num, LOW);
     //printDirectory(root, 0);
   }
 
