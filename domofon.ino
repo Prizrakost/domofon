@@ -20,8 +20,7 @@
 Gwiot7941e rfid;
 UnixTime stamp(10);
 const long utcOffsetInSeconds = 0;
-WiFiUDP ntpUDP;
-NTPClient timeClient(ntpUDP, "pool.ntp.org", utcOffsetInSeconds);
+bool ntpCorrect = true;
 File root;
 File myFile;
 File keysFile;
@@ -116,6 +115,21 @@ void setup() {
       digitalWrite(RED_PIN, LOW);
     }
   }
+
+  try{
+    WiFiUDP ntpUDP;
+    NTPClient timeClient(ntpUDP, "pool.ntp.org", utcOffsetInSeconds);
+  )
+  catch
+    {
+      for (byte i = 0, i<5, i++)
+      {
+        digitalWrite(GREEN_PIN, HIGH);
+        delay(1000);
+        digitalWrite(GREEN_PIN, LOW);
+      }
+    ntpCorrect = false;
+    }
   
   //если код доходит сюда, то ошибок нет - дверь закрывается
   digitalWrite(DOOR_pin, HIGH);
