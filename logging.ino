@@ -54,21 +54,27 @@ void makeLog(String message){
   String _month;
   String _year;
 
-
   timeClient.update();
   stamp.getDateTime(timeClient.getEpochTime());
-
+  
   _day = String(stamp.day);
   _month = String(stamp.month);
   _year = String(stamp.year);
-
+  
   Serial.println(_year);
 
   SD.mkdir(String("logs") + String("/") + _year);
   SD.mkdir(String("logs") + String("/") + _year + String("/") + String(_month));
   
   myFile = SD.open(String("logs") + String("/") + _year + String("/") + String(_month) + String("/") + _day + String(".txt"), FILE_WRITE);
-  myFile.print(nowTime());
+  String nowTime;
+  if(ntpCorrect){
+    nowTime = nowTime();
+  }
+  else{
+    nowTime = "00:00:00";
+  }
+  myFile.print(nowTime);
   myFile.print(" ");
   myFile.println(message);
   myFile.close();
