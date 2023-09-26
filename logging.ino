@@ -2,7 +2,16 @@
 bool isCardGranted(String readedCardNum)
   {
     for(uint8_t i = 0; i<10; i++){
-      if (readedCardNum == cardID[i]) return true;
+      if (readedCardNum == cardID[i] && cardPermission[i])
+        {
+          if (ntpCorrect)
+          {
+            //cardDate надо сделать в формате int или в каком там формате юникс время
+            if(cardDate[i] == timeClient.getDateTime(stamp.getUnix())) return true; //я не помню как запрашиать юникс время. ибо сравнивать даты в формате 01.01.2001 это пиздец
+            else return false;
+          }
+          return true;
+        }
       }
     return false;
   }
