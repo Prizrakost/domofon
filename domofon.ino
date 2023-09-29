@@ -1,4 +1,3 @@
-#include <GyverPortal.h>
 #include <ESP8266WiFi.h>
 #include <SD.h>
 #include <SPI.h>
@@ -8,6 +7,7 @@
 #include <NTPClient.h>
 #include <WiFiUdp.h>
 #include <UnixTime.h>
+#include <GyverPortal.h>
 
 #define SD_pin_num 15
 #define GWIOT_7941E_RX_PIN 4
@@ -42,7 +42,9 @@ String keys[200][4] = {
   };
 bool newKeyButton = false;
 String newKey[4] = {"", "", "", ""};
-bool doorOpen = false;
+// атрибут volatile для возможности изменения
+// переменной внутри прерывания
+volatile bool doorOpen = false;
 
 void setup() {
   // Инициализация Serial
@@ -53,7 +55,13 @@ void setup() {
   // Настройка пинов
   digitalWrite(SOUND_pin_num, LOW);
   pinMode(SOUND_pin_num, OUTPUT);
-  pinMode(BUTTON_pin, INPUT);
+  // прерывание кнопки
+  pinMode(BUTTON_pin, INPUT_PULLUP);
+  int button_interrupt_pin = digitalPinToInterrupt(BUTTON_pin);
+  // FALLING - срабатывает, когда меняется с HIGH на LOW
+  attachInterrupt(button_interrupt_pin, doorOpenInterrupt, FALLING);
+
+
   pinMode(DOOR_pin, OUTPUT);
   digitalWrite(DOOR_pin, LOW);
   pinMode(RED_LED, OUTPUT);

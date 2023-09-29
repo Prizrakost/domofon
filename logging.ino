@@ -57,6 +57,7 @@ String getPart(String text, char del, int index)
 
 //создание лога
 void makeLog(String message){
+  // 
   SD.mkdir("logs");
 
   String _day;
