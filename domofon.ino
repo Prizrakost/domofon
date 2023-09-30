@@ -24,7 +24,8 @@ bool ntpCorrect = true;
 File root;
 File myFile;
 File keysFile;
-String cardID[10], cardOwner[10], cardPermission[10], cardDate[10];
+//String cardID[10], cardOwner[10], cardPermission[10], cardDate[10];
+KeyCard[20] cards;
 GyverPortal portal;
 File config_file;
 bool WiFimode = false; // false = AP, true = STA
