@@ -63,10 +63,10 @@ void read_keys_file() {
   uint8_t key_index = 0;
   while (keysFile.available()) {
     String raw_key = keysFile.readStringUntil('\n');
-    cardID[key_index] = (getPart(raw_key, ';', 0)); //эти массивы потом будут проверяться в соотвтетствии с индексом
-    cardOwner[key_index] = (getPart(raw_key, ';', 1));//то есть если у нас есть совпадение по 4 номеру из cardID
-    cardPermission[key_index] = (getPart(raw_key, ';', 2));//то надо выводить остальную информацию так же с 4-м номером
-    cardDate[key_index] = getPart(raw_key, ';', 4);//например - cardID[4], тогда соответствующие данные - cardOwner[4] ...
+    cards[key_index].id = getPart(raw_key, ';', 0); //эти массивы потом будут проверяться в соотвтетствии с индексом
+    cards[key_index].owner = getPart(raw_key, ';', 1);//то есть если у нас есть совпадение по 4 номеру из cardID
+    cards[key_index].permission = getPart(raw_key, ';', 2);//то надо выводить остальную информацию так же с 4-м номером
+    cards[key_index].endDate = getPart(raw_key, ';', 4);//например - cardID[4], тогда соответствующие данные - cardOwner[4] ...
     key_index += 1;
   }
   keysFile.close();
